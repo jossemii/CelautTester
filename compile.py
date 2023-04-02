@@ -14,7 +14,7 @@ from main import GATEWAY
 
 
 def generate_service_zip(proyect_directory: str) -> str:
-
+    pass
 
 
 def compile(partitions_model, partitions_message_mode_parser, repo):
