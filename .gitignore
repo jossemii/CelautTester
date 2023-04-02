@@ -1,0 +1,7 @@
+script_data.json
+__block__
+__pycache__/*
+__registry__/*
+dataset.bin
+.service.zip
+__cache__/*
