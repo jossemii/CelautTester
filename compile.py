@@ -1,3 +1,5 @@
+import shutil
+import sys
 from hashlib import sha3_256
 from typing import Optional
 
@@ -9,6 +11,10 @@ import grpc
 import os
 from gateway_pb2_grpcbf import Compile_output_partitions_v1
 from main import GATEWAY
+
+
+def generate_service_zip(proyect_directory: str) -> str:
+
 
 
 def compile(partitions_model, partitions_message_mode_parser, repo):
@@ -25,13 +31,18 @@ def compile(partitions_model, partitions_message_mode_parser, repo):
             partitions_message_mode_parser=partitions_message_mode_parser
     )
 
+service_zip_dir: str = generate_service_zip(
+    proyect_directory = sys.argv[1]
+)
 
+
+exit()
 id: Optional[str] = None
 print('Start compile.')
 for b in compile(
         partitions_model=Compile_output_partitions_v1,
         partitions_message_mode_parser=[True, False],
-        repo='.service.zip'
+        repo=service_zip_dir
 ):
     print('b -> ', b)
     if b is gateway_pb2.CompileOutput:
@@ -43,6 +54,7 @@ for b in compile(
     else:
         raise Exception('\nError with the compiler output.' + str(b))
 
+os.remove(service_zip_dir)
 print('service id -> ', id)
 
 print('\n Validate the content.')
