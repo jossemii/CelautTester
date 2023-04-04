@@ -52,7 +52,7 @@ def generate_service_zip(project_directory: str) -> str:
     for dependency in compile_config['dependencies']:
         if not os.path.exists(f"{SERVICES}/{dependency}"):
             raise Exception("Dependency not found.")
-        os.system(f"cp {SERVICES}/{dependency} {complete_source_directory}/{compile_config['dependencies_directory']}")
+        os.system(f"cp -R {SERVICES}/{dependency} {complete_source_directory}/{compile_config['dependencies_directory']}")
         if os.path.isdir(f"{SERVICES}/{dependency}"):
             with open(f"{SERVICES}/{dependency}/_.json", 'r') as dependency_json_file:
                 dependency_json = json.load(dependency_json_file)
