@@ -1,15 +1,13 @@
 import json
-import sys
 import os
+import sys
+
 import grpc
 from grpcbigbuffer import client as grpcbb
 
 import gateway_pb2
 import gateway_pb2_grpc
 from main import GATEWAY
-
-import os
-import json
 
 ZIP_SOURCE_DIRECTORY = 'src'
 SERVICES = '__registry__'
