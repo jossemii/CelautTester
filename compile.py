@@ -1,12 +1,14 @@
 import json
 import os
 import sys
+from typing import Optional
 
 import grpc
 from grpcbigbuffer import client as grpcbb
 
 import gateway_pb2
 import gateway_pb2_grpc
+from gateway_pb2_grpcbf import Compile_output_partitions_v1
 from main import GATEWAY
 
 ZIP_SOURCE_DIRECTORY = 'src'
@@ -91,8 +93,6 @@ def _compile(partitions_model, partitions_message_mode_parser, repo):
 service_zip_dir: str = generate_service_zip(
     project_directory=sys.argv[1]
 )
-
-exit()
 
 id: Optional[str] = None
 print('Start compile.')
