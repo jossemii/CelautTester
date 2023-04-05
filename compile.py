@@ -70,6 +70,8 @@ def generate_service_zip(project_directory: str) -> str:
         os.system(f'cd {complete_source_directory} && '
                   f'zip -r services.zip '
                   f'{compile_config["dependencies_directory"]} {compile_config["blocks_directory"]}')
+        os.system(f'cd {complete_source_directory} && '
+                  f'rm -rf {compile_config["dependencies_directory"]} {compile_config["blocks_directory"]}')
 
     # Create a ZIP file of the destination source directory
     os.system(f"cd {project_directory}/.service && zip -r .service.zip .")
