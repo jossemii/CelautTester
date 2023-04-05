@@ -52,15 +52,24 @@ def generate_service_zip(project_directory: str) -> str:
     for dependency in compile_config['dependencies']:
         if not os.path.exists(f"{SERVICES}/{dependency}"):
             raise Exception("Dependency not found.")
-        os.system(f"cp -R {SERVICES}/{dependency} {complete_source_directory}/{compile_config['dependencies_directory']}")
+        os.system(f"cp -R {SERVICES}/{dependency} "
+                  f"{complete_source_directory}/{compile_config['dependencies_directory']}")
         if os.path.isdir(f"{SERVICES}/{dependency}"):
             with open(f"{SERVICES}/{dependency}/_.json", 'r') as dependency_json_file:
                 dependency_json = json.load(dependency_json_file)
                 for e in dependency_json:
                     if type(e) == list:
                         block: str = e[0]
-                        if not os.path.exists(f'{complete_source_directory}/{compile_config["blocks_directory"]}/{block}'):
-                            os.system(f"cp {BLOCKS}/{block} {complete_source_directory}/{compile_config['blocks_directory']}")
+                        if not os.path.exists(
+                                f'{complete_source_directory}/{compile_config["blocks_directory"]}/{block}'
+                        ):
+                            os.system(f"cp -r {BLOCKS}/{block} "
+                                      f"{complete_source_directory}/{compile_config['blocks_directory']}")
+
+    if compile_config['zip']:
+        os.system(f'cd {complete_source_directory} && '
+                  f'zip -r services.zip '
+                  f'{compile_config["dependencies_directory"]} {compile_config["blocks_directory"]}')
 
     # Create a ZIP file of the destination source directory
     os.system(f"cd {project_directory}/.service && zip -r .service.zip .")
