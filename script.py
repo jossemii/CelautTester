@@ -7,7 +7,7 @@ from main import TEQUILA, WHISKY, RANDOM, SORTER, FRONTIER, WALL, WALK, GATEWAY,
 
 SHA3_256 = 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
 
-LIST_OF_SOLVERS = [FRONTIER, WALL, WALK]
+LIST_OF_SOLVERS = [FRONTIER]
 
 def is_good(cnf, interpretation):
     def good_clause(clause, interpretation):
@@ -146,7 +146,6 @@ else:
 sleep(10) # Espera a que el servidor se levante.
 
 print('Subiendo solvers al clasificador.')
-# Añade solvers.
 for s in LIST_OF_SOLVERS:
     print('     ', s)
     while True:
