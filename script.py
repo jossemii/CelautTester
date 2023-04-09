@@ -179,7 +179,6 @@ if True: #input("\nGo to train? (y/n)")=='y':
     print('Wait to train the model ...')
     for i in range(50): 
         for j in range(5):
-            print(' time ', i, j)
             sleep(200)
 
         cnf = next(client_grpc(
@@ -241,12 +240,18 @@ if True: #input("\nGo to train? (y/n)")=='y':
 
         print('Obtiene el data_set.')
 
-        shutil.copyfile( 
-            next(client_grpc(
+        dataset_it = client_grpc(
                 method = c_stub.GetDataSet,
                 indices_parser = solvers_dataset_pb2.DataSet,
                 partitions_message_mode_parser=False
-            )),         
+            )
+        dataset_obj = next(dataset_it)
+        print(dataset_obj, type(dataset_obj))
+        if type(dataset_obj) != str:
+            dataset_obj = next(dataset_it)
+            print(dataset_obj, type(dataset_obj))
+        shutil.copyfile( 
+            dataset_obj,
             'dataset.bin'
         )
 
@@ -291,12 +296,18 @@ for tensor in c_stub.GetTensor(api_pb2.Empty()):
 """
 
 print('Obtiene el data_set.')
-shutil.copyfile( 
-    next(client_grpc(
+dataset_it = client_grpc(
         method = c_stub.GetDataSet,
         indices_parser = solvers_dataset_pb2.DataSet,
         partitions_message_mode_parser=False
-    )),         
+    )
+dataset_obj = next(dataset_it)
+print(dataset_obj, type(dataset_obj))
+if type(dataset_obj) != str:
+    dataset_obj = next(dataset_it)
+    print(dataset_obj, type(dataset_obj))
+shutil.copyfile(
+    dataset_obj,
     'dataset.bin'
 )
 
