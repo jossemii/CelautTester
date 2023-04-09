@@ -179,6 +179,7 @@ if True: #input("\nGo to train? (y/n)")=='y':
     print('Wait to train the model ...')
     for i in range(50): 
         for j in range(5):
+            print(f'\n{i}-{j}')
             sleep(200)
 
         cnf = next(client_grpc(
