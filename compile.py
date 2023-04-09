@@ -1,6 +1,8 @@
 import json
 import os
 import sys
+from hashlib import sha3_256
+
 from typing import Optional
 
 import grpc
