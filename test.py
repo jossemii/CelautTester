@@ -4,7 +4,7 @@ from threading import Thread
 from time import sleep, time
 import grpc, gateway_pb2, gateway_pb2_grpc, api_pb2_grpc, api_pb2, celaut_pb2, buffer_pb2
 
-from main import FRONTIER, GATEWAY, RANDOM, SHA3_256
+from main import FRONTIER, GATEWAY, RANDOM, SHA3_256, SORTER, REGRESION
 from grpcbigbuffer.client import Dir, client_grpc
 from gateway_pb2_grpcbf import StartService_input, StartService_input_partitions_v1
 
@@ -25,13 +25,14 @@ def generator(hash: str, mem_limit: int = 50*pow(10, 6)):
     except Exception as e: print(e)
 
     # Send partition model.
+    print('yild registry ServiceWithMeta.')
     yield ( 
         gateway_pb2.ServiceWithMeta,
         Dir('__registry__/'+hash)
     ) 
     
 def service_extended(hash):
-    for t in generator(hash=hash): yield t  
+    yield from generator(hash=hash)
 
 
 def get_grpc_uri(instance: celaut_pb2.Instance) -> celaut_pb2.Instance.Uri:
