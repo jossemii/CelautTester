@@ -201,7 +201,8 @@ if True: #input("\nGo to train? (y/n)")=='y':
                 input=cnf,
                 indices_serializer=api_pb2.Cnf
             ))
-            print(str(time()-t)+' OKAY THE INTERPRETATION WAS ', interpretation, '.', is_good(cnf=cnf, interpretation=interpretation))
+            print(str(time()-t)+' OKAY THE INTERPRETATION WAS ', interpretation, '.',
+                  is_good(cnf=cnf, interpretation=interpretation))
         
             print(' SOLVING CNF ON DIRECT SOLVER ...')
             t = time()
