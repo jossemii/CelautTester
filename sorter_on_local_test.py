@@ -138,13 +138,15 @@ for i in range(1):
         t.join()
 
 print('Obtiene el data_set.')
-dataset = next(client_grpc(
-    method=c_stub.GetDataSet,
-    indices_parser=api_pb2.solvers__dataset__pb2.DataSet,
-    partitions_message_mode_parser=True
-))
-open('dataset.bin', 'wb').write(dataset.SerializeToString())
-
+try:
+    dataset = next(client_grpc(
+        method=c_stub.GetDataSet,
+        indices_parser=api_pb2.solvers__dataset__pb2.DataSet,
+        partitions_message_mode_parser=True
+    ))
+    with open('dataset.bin', 'wb') as f:
+        f.write(dataset.SerializeToString())
+finally: pass
 
 print('waiting for kill solvers ...')
 sleep(120)
