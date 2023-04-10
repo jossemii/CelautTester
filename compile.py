@@ -19,13 +19,22 @@ BLOCKS = '__block__'
 
 
 def export_registry(directory: str, compile_config: Dict):
-    os.system(f'mkdir {directory}/{compile_config["dependencies_directory"]}')
-    os.system(f'mkdir {directory}/{compile_config["blocks_directory"]}')
+    try:
+        os.system(f'rm -rf {directory}/{compile_config["dependencies_directory"]}')
+    finally:
+        os.system(f'mkdir {directory}/{compile_config["dependencies_directory"]}')
+
+    try:
+        os.system(f'rm -rf {directory}/{compile_config["blocks_directory"]}')
+    finally:
+        os.system(f'mkdir {directory}/{compile_config["blocks_directory"]}')
+
     for dependency in compile_config['dependencies']:
         if not os.path.exists(f"{SERVICES}/{dependency}"):
             raise Exception("Dependency not found.")
         os.system(f"cp -R {SERVICES}/{dependency} "
                   f"{directory}/{compile_config['dependencies_directory']}")
+
         if os.path.isdir(f"{SERVICES}/{dependency}"):
             with open(f"{SERVICES}/{dependency}/_.json", 'r') as dependency_json_file:
                 dependency_json = json.load(dependency_json_file)
