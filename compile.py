@@ -47,6 +47,7 @@ def export_registry(directory: str, compile_config: Dict):
                             os.system(f"cp -r {BLOCKS}/{block} "
                                       f"{directory}/{compile_config['blocks_directory']}")
 
+
 def generate_service_zip(project_directory: str) -> str:
     # Remove the last character '/' from the path if it exists
     if project_directory[-1] == '/':
@@ -113,6 +114,7 @@ def _compile(partitions_model, partitions_message_mode_parser, repo):
         partitions_parser=partitions_model,
         partitions_message_mode_parser=partitions_message_mode_parser
     )
+
 
 if __name__ == '__main__':
 
