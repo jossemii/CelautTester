@@ -33,7 +33,7 @@ except Exception as e:
 
 print('Subiendo solvers al clasificador.')
 # Añade solvers.
-for s in [FRONTIER]:
+for s in []:
     print('     ', s, isfile('__registry__/'+s))
     next(client_grpc(
         method = c_stub.UploadSolver,
