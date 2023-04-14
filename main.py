@@ -14,7 +14,7 @@ WHISKY = ''
 MOJITO = '192.168.1.16'
 TEQUILA = '192.168.1.65'
 LOCALHOST = 'localhost'
-GATEWAY = TEQUILA
+GATEWAY = LOCALHOST
 
 import celaut_pb2, gateway_pb2
 from grpcbigbuffer.client import Dir
