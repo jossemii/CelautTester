@@ -13,7 +13,7 @@ def service_extended():
     yield gateway_pb2.HashWithConfig(
         hash=celaut_pb2.Any.Metadata.HashTag.Hash(
             type=bytes.fromhex(SHA3_256),
-            value=bytes.fromhex(RANDOM)
+            value=bytes.fromhex(REGRESION)
         ),
         config=celaut_pb2.Configuration(),
         min_sysreq=celaut_pb2.Sysresources(
@@ -22,7 +22,7 @@ def service_extended():
     )
     yield (
         gateway_pb2.ServiceWithMeta,
-        Dir('__registry__/' + RANDOM)
+        Dir('__registry__/' + REGRESION)
     )
 
 
