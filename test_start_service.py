@@ -21,7 +21,7 @@ def service_extended():
         )
     )
     yield (
-        gateway_pb2.ServiceWithMeta,
+         gateway_pb2.ServiceWithMeta,
         Dir('__registry__/' + REGRESION)
     )
 
@@ -35,7 +35,6 @@ random = next(client_grpc(
     input=service_extended(),
     indices_parser=gateway_pb2.Instance,
     partitions_message_mode_parser=True,
-    indices_serializer=gateway_pb2_grpcbf.StartService_input,
-    partitions_serializer=gateway_pb2_grpcbf.StartService_input_partitions_v1
+    indices_serializer=gateway_pb2_grpcbf.StartService_input
 ))
 print(f'random partition -> {random}')
