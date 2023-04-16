@@ -19,15 +19,16 @@ BLOCKS = '__block__'
 
 
 def export_registry(directory: str, compile_config: Dict):
-    try:
-        os.system(f'rm -rf {directory}/{compile_config["dependencies_directory"]}')
-    finally:
-        os.system(f'mkdir {directory}/{compile_config["dependencies_directory"]}')
+    if compile_config["dependencies_directory"] and compile_config["blocks_directory"]:
+        try:
+            os.system(f'rm -rf {directory}/{compile_config["dependencies_directory"]}')
+        finally:
+            os.system(f'mkdir {directory}/{compile_config["dependencies_directory"]}')
 
-    try:
-        os.system(f'rm -rf {directory}/{compile_config["blocks_directory"]}')
-    finally:
-        os.system(f'mkdir {directory}/{compile_config["blocks_directory"]}')
+        try:
+            os.system(f'rm -rf {directory}/{compile_config["blocks_directory"]}')
+        finally:
+            os.system(f'mkdir {directory}/{compile_config["blocks_directory"]}')
 
     for dependency in compile_config['dependencies']:
         if not os.path.exists(f"{SERVICES}/{dependency}"):
