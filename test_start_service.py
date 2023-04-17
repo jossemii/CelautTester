@@ -10,6 +10,7 @@ from main import GATEWAY, REGRESION, RANDOM, SHA3_256
 def service_extended():
     # Send partition model.
     yield gateway_pb2.Client(client_id='dev')
+    print(1)
     yield gateway_pb2.HashWithConfig(
         hash=celaut_pb2.Any.Metadata.HashTag.Hash(
             type=bytes.fromhex(SHA3_256),
@@ -20,10 +21,12 @@ def service_extended():
             mem_limit=50 * pow(10, 6)
         )
     )
+    print(2)
     yield (
          gateway_pb2.ServiceWithMeta,
         Dir('__registry__/' + REGRESION)
     )
+    print(3)
 
 
 g_stub = gateway_pb2_grpc.GatewayStub(

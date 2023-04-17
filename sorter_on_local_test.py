@@ -33,7 +33,7 @@ except Exception as e:
 
 print('Subiendo solvers al clasificador.')
 # Añade solvers.
-for s in []:
+for s in [FRONTIER]:
     print('     ', s, isfile('__registry__/'+s))
     next(client_grpc(
         method = c_stub.UploadSolver,
@@ -68,18 +68,22 @@ if True:  #if input("\nGo to train? (y/n)")=='y':
     ))
 
     print('Wait to train the model ...')
-    for i in range(5): 
-        for j in range(30):
+    for i in range(5):
+        for j in range(60):
             print(' time ', i, j)
-            sleep(1)
+            sleep(60)
         
         print('Obtiene el data_set.')
-        dataset = next(client_grpc(
-            method=c_stub.GetDataSet,
-            indices_parser=api_pb2.solvers__dataset__pb2.DataSet,
-            partitions_message_mode_parser=True
-        ))
-        open('dataset.bin', 'wb').write(dataset.SerializeToString())
+        try:
+            dataset = next(client_grpc(
+                method=c_stub.GetDataSet,
+                indices_parser=api_pb2.solvers__dataset__pb2.DataSet,
+                partitions_message_mode_parser=True
+            ))
+            with open('dataset.bin', 'wb') as f:
+                f.write(dataset.SerializeToString())
+        except Exception as e:
+            print('Error getting dataset -> ', e)
 
         cnf = next(client_grpc(
             method = r_stub.RandomCnf,
@@ -105,9 +109,14 @@ if True:  #if input("\nGo to train? (y/n)")=='y':
 
 print('Termina el entrenamiento')
 # En caso de que estubiera entrenando lo finaliza.
-next(client_grpc(
-    method=c_stub.StopTrain
-))
+try:
+    next(client_grpc(
+        method=c_stub.StopTrain
+    ))
+except Exception as e:
+    print('e -> ', e)
+    raise e
+print('Entrenamiento terminado')
 
 # Comprueba si sabe generar una interpretacion (sin tener ni idea de que tal
 # ha hecho la seleccion del solver.)
@@ -118,12 +127,15 @@ def final_test(c_stub, r_stub, i, j):
         partitions_message_mode_parser=True
     ))
     t = time()
-    interpretation = next(client_grpc(
-        method=c_stub.Solve,
-        input=cnf,
-        indices_parser=api_pb2.Interpretation,
-        partitions_message_mode_parser=True
-    ))
+    try:
+        interpretation = next(client_grpc(
+            method=c_stub.Solve,
+            input=cnf,
+            indices_parser=api_pb2.Interpretation,
+            partitions_message_mode_parser=True
+        ))
+    except Exception as e:
+        print(i, j, '  e -> ', e)
     print(interpretation, str(time()-t)+'THE FINAL INTERPRETATION IN THREAD '+str(threading.get_ident()),' last time ', i, j)
 
 
@@ -146,6 +158,8 @@ try:
     ))
     with open('dataset.bin', 'wb') as f:
         f.write(dataset.SerializeToString())
+except Exception as e:
+    print('e -> ', e)
 finally: pass
 
 print('waiting for kill solvers ...')
@@ -156,4 +170,4 @@ next(client_grpc(
     method=g_stub.StopService,
     input=gateway_pb2.TokenMessage(token=random_cnf_service.token)
 ))
-print('All good?')
+print('\n\nAll good?')
