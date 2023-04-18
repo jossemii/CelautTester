@@ -3,9 +3,7 @@ from gateway_pb2_grpcbf import StartService_input, StartService_input_partitions
 import grpc, gateway_pb2, gateway_pb2_grpc, api_pb2, api_pb2_grpc, threading, json, solvers_dataset_pb2, celaut_pb2
 from time import sleep, time
 from grpcbigbuffer.client import Dir, client_grpc
-from main import TEQUILA, WHISKY, RANDOM, SORTER, FRONTIER, WALL, WALK, GATEWAY, to_gas_amount
-
-SHA3_256 = 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
+from main import TEQUILA, WHISKY, RANDOM, SORTER, FRONTIER, WALL, WALK, GATEWAY, to_gas_amount, SHA3_256
 
 LIST_OF_SOLVERS = [FRONTIER]
 
@@ -73,8 +71,7 @@ if type(json.load(open('script_data.json', 'r'))) != dict:
         ),
         indices_parser = gateway_pb2.Instance,
         partitions_message_mode_parser = True,
-        indices_serializer = StartService_input,
-        partitions_serializer = StartService_input_partitions_v1  # There it's not used.
+        indices_serializer = StartService_input
     ))
     print(classifier)
     uri=classifier.instance.uri_slot[0].uri[0]
@@ -90,8 +87,7 @@ if type(json.load(open('script_data.json', 'r'))) != dict:
         input = generator(hash = RANDOM),
         indices_parser = gateway_pb2.Instance,
         partitions_message_mode_parser = True,
-        indices_serializer = StartService_input,
-        partitions_serializer = StartService_input_partitions_v1  # There it's not used.
+        indices_serializer = StartService_input
     ))
     print(random_cnf_service)
     uri=random_cnf_service.instance.uri_slot[0].uri[0]
@@ -103,14 +99,14 @@ if type(json.load(open('script_data.json', 'r'))) != dict:
 
     if FRONTIER != '':
         # Get the frontier for test it.
-        uri=next(client_grpc(
+        frontier_service=next(client_grpc(
             method = g_stub.StartService,
             input = generator(hash = FRONTIER),
             indices_parser = gateway_pb2.Instance,
             partitions_message_mode_parser = True,
             indices_serializer = StartService_input,
-            partitions_serializer = StartService_input_partitions_v1  # There it's not used.
-        )).instance.uri_slot[0].uri[0]
+        ))
+        uri = frontier_service.instance.uri_slot[0].uri[0]
         frontier_uri = uri.ip +':'+ str(uri.port)
         frontier_stub = api_pb2_grpc.SolverStub(
             grpc.insecure_channel(frontier_uri)
@@ -123,7 +119,7 @@ if type(json.load(open('script_data.json', 'r'))) != dict:
         json.dump({
             'sorter': c_uri,
             'random': r_uri,
-            #'frontier': frontier_uri,
+            'frontier': frontier_uri,
         }, file)
 
 else:
@@ -321,17 +317,34 @@ for i in range(10):
 
 # Stop the classifier.
 print('Stop the clasifier.')
-next(client_grpc(
-    method=g_stub.StopService,
-    input=gateway_pb2.TokenMessage(token=classifier.token)
-))
+try:
+    next(client_grpc(
+        method=g_stub.StopService,
+        input=gateway_pb2.TokenMessage(token=classifier.token)
+    ))
+except Exception as e:
+    print('e -> ', e)
 
 # Stop Random cnf service.
 print('Stop the random.')
-next(client_grpc(
-    method=g_stub.StopService,
-    input=gateway_pb2.TokenMessage(token=random_cnf_service.token)
-))
+try:
+    next(client_grpc(
+        method=g_stub.StopService,
+        input=gateway_pb2.TokenMessage(token=random_cnf_service.token)
+    ))
+except Exception as e:
+    print('e -> ', e)
+
+# Stop Frontier cnf service.
+print('Stop the frontier.')
+try:
+    next(client_grpc(
+        method=g_stub.StopService,
+        input=gateway_pb2.TokenMessage(token=frontier_service.token)
+    ))
+except Exception as e:
+        print('e -> ', e)
+    
 print('All good?')
 
 with open('script_data.json', 'w') as file:
