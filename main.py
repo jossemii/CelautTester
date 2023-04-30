@@ -10,11 +10,10 @@ LISIADO_OVER = ''
 
 SHA3_256 = 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
 
-WHISKY = ''
-MOJITO = '192.168.1.16'
-TEQUILA = '192.168.1.65'
+MOJITO = '192.168.1.31'
+WHISKY = '192.168.1.65'
 LOCALHOST = 'localhost'
-GATEWAY = TEQUILA
+GATEWAY = WHISKY
 
 import celaut_pb2, gateway_pb2
 from grpcbigbuffer.client import Dir
