@@ -5,6 +5,8 @@ from time import sleep, time
 from grpcbigbuffer.client import Dir, client_grpc
 from main import RANDOM, SORTER, FRONTIER, WALL, WALK, GATEWAY, to_gas_amount, SHA3_256
 
+# SORTER = "f3442b6fbb0f437c7ce6417a39061946dca865f5c4962f2a768a336d049dd398" without collect dataset.
+
 LIST_OF_SOLVERS = [FRONTIER]
 
 def is_good(cnf, interpretation):
@@ -66,7 +68,7 @@ if type(json.load(open('script_data.json', 'r'))) != dict:
         method = g_stub.StartService,
         input = generator(
             hash = SORTER, 
-            mem_limit= 4150*pow(10, 6),
+            mem_limit = 105*pow(10, 6),
             initial_gas_amount = pow(10, 64)
         ),
         indices_parser = gateway_pb2.Instance,
