@@ -1,4 +1,5 @@
-import buffer_pb2, gateway_pb2
+from grpcbigbuffer import buffer_pb2
+import gateway_pb2
 
 StartService_input = {
     5 : gateway_pb2.Client,
