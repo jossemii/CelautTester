@@ -118,6 +118,11 @@ def _compile(partitions_model, partitions_message_mode_parser, repo, node: str):
 
 
 if __name__ == '__main__':
+    if not os.path.exists('__cache__'):
+        os.mkdir('__cache__')
+
+    if not os.path.exists('__registry__'):
+        os.mkdir('__registry__')
 
     service_zip_dir: str = generate_service_zip(
         project_directory=sys.argv[1]
