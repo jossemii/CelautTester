@@ -5,3 +5,4 @@ __registry__/*
 dataset.bin
 .service.zip
 __cache__/*
+venv
