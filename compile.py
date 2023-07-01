@@ -32,7 +32,7 @@ def export_registry(directory: str, compile_config: Dict):
 
     for dependency in compile_config['dependencies']:
         if not os.path.exists(f"{SERVICES}/{dependency}"):
-            raise Exception("Dependency not found.")
+            raise Exception(f"Dependency not found. {dependency}")
         os.system(f"cp -R {SERVICES}/{dependency} "
                   f"{directory}/{compile_config['dependencies_directory']}")
 
