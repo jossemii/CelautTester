@@ -153,6 +153,7 @@ if __name__ == '__main__':
 
     validate_id = sha3_256()
 
+    # TODO: En caso de que  no contenga multiples bloques, debe de controlarse.
     for i in grpcbb.read_multiblock_directory('__registry__/' + id + '/'):
         validate_id.update(i)
 
