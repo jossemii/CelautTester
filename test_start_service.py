@@ -4,7 +4,7 @@ import gateway_pb2_grpcbf, gateway_pb2, gateway_pb2_grpc
 import grpc
 import grpcbigbuffer
 from grpcbigbuffer.client import Dir, client_grpc
-from main import GATEWAY, REGRESION, RANDOM, SHA3_256
+from main import GATEWAY, FRONTIER, SHA3_256
 
 
 def service_extended():
@@ -13,7 +13,7 @@ def service_extended():
     yield gateway_pb2.HashWithConfig(
         hash=celaut_pb2.Any.Metadata.HashTag.Hash(
             type=bytes.fromhex(SHA3_256),
-            value=bytes.fromhex(REGRESION)
+            value=bytes.fromhex(FRONTIER)
         ),
         config=celaut_pb2.Configuration(),
         min_sysreq=celaut_pb2.Sysresources(
@@ -22,7 +22,7 @@ def service_extended():
     )
     yield (
          gateway_pb2.ServiceWithMeta,
-        Dir('__registry__/' + REGRESION)
+        Dir('__registry__/' + FRONTIER)
     )
 
 
