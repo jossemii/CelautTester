@@ -153,19 +153,10 @@ if __name__ == '__main__':
 
     validate_id = sha3_256()
 
-    # TODO: En caso de que  no contenga multiples bloques, debe de controlarse.
-    for i in grpcbb.read_multiblock_directory('__registry__/' + id + '/'):
-        validate_id.update(i)
+    try:
+        for i in grpcbb.read_multiblock_directory('__registry__/' + id + '/'):
+            validate_id.update(i)
+    except Exception as e:
+        print(f"¿Tal vez no tiene bloques? {str(e)}")
 
     print('content id (service with meta id)', validate_id.hexdigest())
-
-    print('\n Validate the service.')
-    validate_id = sha3_256()
-
-    service_with_meta = gateway_pb2.ServiceWithMeta()
-    with open('__registry__/' + id + '/wbp.bin', 'rb') as f:
-        service_with_meta.ParseFromString(
-            f.read()
-        )
-
-    print('validated service id', validate_id.hexdigest())
