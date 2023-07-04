@@ -2,7 +2,8 @@ from random import randint, random, choice
 import sys
 from threading import Thread
 from time import sleep, time
-import grpc, gateway_pb2, gateway_pb2_grpc, api_pb2_grpc, api_pb2, celaut_pb2, buffer_pb2
+import grpc, gateway_pb2, gateway_pb2_grpc, api_pb2_grpc, api_pb2, celaut_pb2
+from grpcbigbuffer import buffer_pb2
 
 from main import FRONTIER, GATEWAY, RANDOM, SHA3_256, SORTER, REGRESION
 from grpcbigbuffer.client import Dir, client_grpc
